@@ -1,4 +1,4 @@
-package sample;
+package kallah;
 
 /**
  * Created by Useless on 11.04.2017.

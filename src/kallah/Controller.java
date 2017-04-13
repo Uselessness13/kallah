@@ -1,4 +1,4 @@
-package sample;
+package kallah;
 
 public class Controller {
 
