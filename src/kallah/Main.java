@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
         primaryStage.setTitle("kallah");
         primaryStage.setScene(new Scene(root, 550, 400));
         primaryStage.setResizable(false);
@@ -24,7 +24,7 @@ public class Main extends Application {
         primaryStage.setOpacity(0.0d);
         while (primaryStage.getOpacity() < 1){
             primaryStage.setOpacity(i);
-            i+=0.01;
+            i+=0.001;
             Thread.sleep(10);
         }
     }
