@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import kallah.Controller;
 
 public class Main extends Application {
 
@@ -17,15 +18,16 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
         primaryStage.setTitle("kallah");
-        primaryStage.setScene(new Scene(root, 550, 400));
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
         double i = 0.0d;
         primaryStage.setOpacity(0.0d);
         while (primaryStage.getOpacity() < 1){
             primaryStage.setOpacity(i);
-            i+=0.001;
+            i+=0.01;
             Thread.sleep(10);
         }
+        Controller.newGame();
     }
 }

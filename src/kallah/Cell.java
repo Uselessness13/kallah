@@ -1,20 +1,32 @@
 package kallah;
 
+import javafx.scene.image.ImageView;
+
 import java.util.List;
 
 /**
  * Created by Useless on 11.04.2017.
  */
 public class Cell {
-    List<Rock> rocks;
-    public Cell(String colour){
-        for (int i = 0; i < 6; i++)
-            addRock(new Rock(colour));
+    private String colour;
+    private List<Rock> rocks;
+    private boolean big;
+    Cell(String colour, boolean big){
+        this.colour = colour;
+        setBig(big);
     }
     public void addRock(Rock rock){
-        rocks.add(rock);
+        this.rocks.add(rock);
     }
     public void removeRock(){
         rocks.remove(rocks.size()-1);
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    private void setBig(boolean big) {
+        this.big = big;
     }
 }
