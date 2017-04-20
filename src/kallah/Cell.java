@@ -1,29 +1,36 @@
 package kallah;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Useless on 11.04.2017.
  */
 public class Cell {
-    private String colour;
-    private List<Rock> rocks;
-    private boolean big;
-    Cell(String colour, boolean big){
-        this.colour = colour;
+    Cell nextCell;
+    List<Rock> rocks;
+    boolean big;
+    FlowPane pane;
+    Cell(boolean big, FlowPane pane){
+        rocks = new ArrayList<Rock>();
+        this.pane = pane;
         setBig(big);
     }
-    public void addRock(Rock rock){
-        this.rocks.add(rock);
+    void addRock(Rock rock){
+        rocks.add(rock);
+        //pane.getChildren().add(new ImageView(rock.image));//hz
     }
     public void removeRock(){
         rocks.remove(rocks.size()-1);
     }
+    Rock getAndRemoveRock(){Rock ret = rocks.get(rocks.size()-1); rocks.remove(rocks.size()-1); return ret;}
 
-    public String getColour() {
-        return colour;
+    public int getNumberOfRocks(){
+        return rocks.size();
     }
 
     private void setBig(boolean big) {

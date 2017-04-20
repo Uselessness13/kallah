@@ -26,8 +26,8 @@ public class Main extends Application {
         while (primaryStage.getOpacity() < 1){
             primaryStage.setOpacity(i);
             i+=0.01;
-            Thread.sleep(10);
+            Thread.sleep(5);
         }
-        Controller.newGame();
+        Controller controller = new Controller();controller.newGame();
     }
 }

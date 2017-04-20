@@ -5,9 +5,12 @@ package kallah;
  */
 public class Player {
     private final boolean up;
-    private int count = 36;
+    private int count = 0;
     Player(boolean up){
         this.up = up;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
