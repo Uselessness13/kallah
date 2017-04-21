@@ -23,6 +23,10 @@ public class Cell {
         if (!this.isBig()) this.against = against;
     }
 
+    public Cell getAgainst() {
+        return against;
+    }
+
     void addRock(Rock rock) {
         rocks.add(rock);
     }

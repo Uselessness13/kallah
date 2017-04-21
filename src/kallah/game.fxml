@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
    <children>
-      <ImageView fitHeight="300.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="386.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@oldboard.png"/>
+            <Image url="@board.png"/>
          </image></ImageView>
       <FlowPane fx:id="BB" layoutX="34.0" layoutY="62.0" onMouseClicked="#clickOnCell" prefHeight="120.0" prefWidth="88.0" />
       <FlowPane fx:id="WB" layoutX="680.0" layoutY="62.0" onMouseClicked="#clickOnCell" prefHeight="120.0" prefWidth="88.0" />
@@ -29,5 +31,7 @@
       <FlowPane fx:id="W4" layoutX="403.0" layoutY="126.0" onMouseClicked="#clickOnCell" prefHeight="86.0" prefWidth="88.0" />
       <FlowPane fx:id="W5" layoutX="497.0" layoutY="126.0" onMouseClicked="#clickOnCell" prefHeight="86.0" prefWidth="88.0" />
       <FlowPane fx:id="W6" layoutX="590.0" layoutY="126.0" onMouseClicked="#clickOnCell" prefHeight="86.0" prefWidth="88.0" />
+      <Button id="start" layoutX="21.0" layoutY="253.0" mnemonicParsing="false" prefHeight="109.0" prefWidth="271.0"
+              styleClass="start-button" onMouseClicked="#newGame"/>
    </children>
 </AnchorPane>

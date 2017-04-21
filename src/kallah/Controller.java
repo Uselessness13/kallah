@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Controller {
-    Player acrivePlyer;
+    Player activePlyer;
     Stage stage;
     String black = "kallah/black.png";
     String white = "kallah/white.png";
@@ -47,16 +47,13 @@ public class Controller {
 
     FlowPane[] flowPanes;
 
-    private static Controller controller;
+    private static Controller controller = new Controller();
 
     Controller() {
         setFlowPanes();
     }
 
     public static Controller getController() {
-        if (controller == null) {
-            return new Controller();
-        }
         return controller;
     }
 
@@ -136,18 +133,47 @@ public class Controller {
 
     public void clickOnCell(MouseEvent e) {
         Object view = (Pane) e.getSource();
-        System.out.println(view.toString());
+        System.out.println(view);
+        int ind = -1;
+        for (int i = 0; i < 14; i++)
+            if (this.flowPanes[i].equals(view))
+                ind = i;
+        System.out.println(ind);
+        Cell endCell = null;
+        Cell startCell = null;
+        int startCellRocks = -1;
+        if (ind >= 0) {
+            startCell = cells.getCell(ind);
+            startCellRocks = startCell.getNumberOfRocks();
+            endCell = cells.moveRocks(ind, activePlyer);
+        }
+        if (endCell != null) {
+            if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
+                moveToKalah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
+            } else if (!endCell.isBig()) {
+                activePlyer = activePlyer == player1 ? player2 : player1;
+            }
+        }
         painter();
+        counter();
     }
 
     public void painter() {
-        System.out.println(flowPanes.length);
         for (int i = 0; i < 14; i++) {
             Cell currentCell = cells.getCell(i);
             for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {
-                System.out.println("flowPanes[" + i + "] = " + flowPanes[i]);
                 flowPanes[i].getChildren().add(currentCell.getRock().getImage());
             }
+        }
+    }
+
+    void moveToKalah(int ind, Player player) {
+        for (int i = 0; i < cells.getCell(ind).getNumberOfRocks(); i++) {
+            Rock cr = cells.getCell(ind).getAndRemoveRock();
+            if (player == player1)
+                cells.getCell(6).addRock(cr);
+            else
+                cells.getCell(13).addRock(cr);
         }
     }
 

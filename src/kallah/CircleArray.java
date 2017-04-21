@@ -21,11 +21,12 @@ class CircleArray {
         return ind < amount ? cells[ind] : cells[Math.abs(amount - ind)];
     }
 
-    void moveRocks(int ind, Player player) {
+    Cell moveRocks(int ind, Player player) {
         Cell indCell = cells[ind];
+        Cell cc = null;
         for (int i = 0; i < indCell.rocks.size(); i++) {
             Rock cr = indCell.getAndRemoveRock();
-            Cell cc = getCell(ind + i + 1);
+            cc = getCell(ind + i + 1);
             if (cc.isBig()) {
                 if (cc.getPlayer() == player)
                     cc.addRock(cr);
@@ -33,6 +34,16 @@ class CircleArray {
             }
             cc.addRock(cr);
         }
+        return cc;
     }
+
+    int getIndexOfCell(Cell cell) {
+        for (int i = 0; i < this.amount; i++) {
+            if (cell.equals(cells[i]))
+                return i;
+        }
+        return -1;
+    }
+
 
 }
