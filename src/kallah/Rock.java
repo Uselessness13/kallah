@@ -1,19 +1,21 @@
 package kallah;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Created by Useless on 11.04.2017.
  */
 public class Rock {
-    Image image;
-    String colour;
+    ImageView image;
 
-    Rock(String colour) {
-        this.colour = colour;
+    Rock() {
     }
 
-    public void setImage(Image image) {
+    public ImageView getImage() {
+        return image;
+    }
+
+    public void setImage(ImageView image) {
         this.image = image;
     }
 }

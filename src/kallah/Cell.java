@@ -1,9 +1,5 @@
 package kallah;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +10,46 @@ public class Cell {
     Cell nextCell;
     List<Rock> rocks;
     boolean big;
-    FlowPane pane;
-    Cell(boolean big, FlowPane pane){
+    private Cell against;
+    private Player player;
+
+    Cell(boolean big, Player player) {
         rocks = new ArrayList<Rock>();
-        this.pane = pane;
+        this.player = player;
         setBig(big);
     }
-    void addRock(Rock rock){
-        rocks.add(rock);
-        //pane.getChildren().add(new ImageView(rock.image));//hz
-    }
-    public void removeRock(){
-        rocks.remove(rocks.size()-1);
-    }
-    Rock getAndRemoveRock(){Rock ret = rocks.get(rocks.size()-1); rocks.remove(rocks.size()-1); return ret;}
 
-    public int getNumberOfRocks(){
+    public void setAgainst(Cell against) {
+        if (!this.isBig()) this.against = against;
+    }
+
+    void addRock(Rock rock) {
+        rocks.add(rock);
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public boolean isBig() {
+        return big;
+    }
+
+    private void removeRock() {
+        rocks.remove(rocks.size() - 1);
+    }
+
+    Rock getAndRemoveRock() {
+        Rock ret = rocks.get(rocks.size() - 1);
+        removeRock();
+        return ret;
+    }
+
+    Rock getRock() {
+        return rocks.get(rocks.size() - 1);
+    }
+
+    int getNumberOfRocks() {
         return rocks.size();
     }
 
