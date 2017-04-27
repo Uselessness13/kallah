@@ -12,5 +12,7 @@ public class Player {
 
     public void setCount(int count) {
         this.count = count;
+        if (this.count >= 36)
+            System.out.println("WIN!!!");
     }
 }

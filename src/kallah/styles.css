@@ -1,3 +1,7 @@
 .pane{
-    -fx-background-image: url("board.png");
+    -fx-background-image: url("oldboard.png");
+}
+
+.start-button {
+    -fx-background-image: url("bear.png");
 }
