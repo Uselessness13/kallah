@@ -12,12 +12,14 @@ import java.util.List;
  */
 public class Cell {
     Cell nextCell;
+    Cell against;
+    Player player;
     List<Rock> rocks;
     boolean big;
     FlowPane pane;
-    Cell(boolean big, FlowPane pane){
+    Cell(boolean big, Player player){
         rocks = new ArrayList<Rock>();
-        this.pane = pane;
+        this.player = player;
         setBig(big);
     }
     void addRock(Rock rock){
@@ -35,5 +37,17 @@ public class Cell {
 
     private void setBig(boolean big) {
         this.big = big;
+    }
+
+    public void setAgainst(Cell against) {
+        this.against = against;
+    }
+
+    public Cell getAgainst() {
+        return this.against;
+    }
+
+    public Rock getRock() {
+        return this.rocks.get(this.rocks.size() - 1);
     }
 }

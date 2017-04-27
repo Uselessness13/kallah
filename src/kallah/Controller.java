@@ -3,6 +3,7 @@ package kallah;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -12,9 +13,8 @@ import kallah.Player;
 import java.util.ArrayList;
 
 public class Controller {
-    Stage stage;
-    String black = "kallah/black.png";
-    String white = "kallah/white.png";
+    ImageView black = new ImageView("kallah/black.png");
+    ImageView white = new ImageView("kallah/white.png");
     Player player1;
     Player player2;
     CircleArray cells;
@@ -47,34 +47,76 @@ public class Controller {
     @FXML
     FlowPane W6;
 
+    FlowPane[] flowPanes;
+
     public void newGame(){
+        setFlowPanes();
         player1 = new Player(true);
         player2 = new Player(false);
-        cells = new CircleArray(14);
-        cells.addCell(0, new Cell(true, BB));
-        cells.addCell(1, new Cell(false, B1));
-        cells.addCell(2, new Cell(false, B2));
-        cells.addCell(3, new Cell(false, B3));
-        cells.addCell(4, new Cell(false, B4));
-        cells.addCell(5, new Cell(false, B5));
-        cells.addCell(6, new Cell(false, B6));
-        cells.addCell(7, new Cell(true, WB));
-        cells.addCell(8, new Cell(false, W1));
-        cells.addCell(9, new Cell(false, W2));
-        cells.addCell(10, new Cell(false, W3));
-        cells.addCell(11, new Cell(false, W4));
-        cells.addCell(12, new Cell(false, W5));
-        cells.addCell(13, new Cell(false, W6));
+        setCells();
+        painter();
+//        counter();
+    }
+
+    private void setCells() {
+        this.cells = new CircleArray(14);
+        this.cells.addCell(0, new Cell(false, player1));
+        this.cells.addCell(1, new Cell(false, player1));
+        this.cells.addCell(2, new Cell(false, player1));
+        this.cells.addCell(3, new Cell(false, player1));
+        this.cells.addCell(4, new Cell(false, player1));
+        this.cells.addCell(5, new Cell(false, player1));
+        this.cells.addCell(6, new Cell(true, player1));
+        this.cells.addCell(7, new Cell(false, player2));
+        this.cells.addCell(8, new Cell(false, player2));
+        this.cells.addCell(9, new Cell(false, player2));
+        this.cells.addCell(10, new Cell(false, player2));
+        this.cells.addCell(11, new Cell(false, player2));
+        this.cells.addCell(12, new Cell(false, player2));
+        this.cells.addCell(13, new Cell(true, player2));
+
+        this.cells.getCell(0).setAgainst(this.cells.getCell(7));
+        this.cells.getCell(1).setAgainst(this.cells.getCell(8));
+        this.cells.getCell(2).setAgainst(this.cells.getCell(9));
+        this.cells.getCell(3).setAgainst(this.cells.getCell(10));
+        this.cells.getCell(4).setAgainst(this.cells.getCell(11));
+        this.cells.getCell(5).setAgainst(this.cells.getCell(12));
+
+        this.cells.getCell(12).setAgainst(this.cells.getCell(5));
+        this.cells.getCell(11).setAgainst(this.cells.getCell(4));
+        this.cells.getCell(10).setAgainst(this.cells.getCell(3));
+        this.cells.getCell(9).setAgainst(this.cells.getCell(2));
+        this.cells.getCell(8).setAgainst(this.cells.getCell(1));
+        this.cells.getCell(7).setAgainst(this.cells.getCell(0));
+
         for (int i = 0; i < 14; i++) {
-            Cell curCell = cells.getCell(i);
+            Cell curCell = this.cells.getCell(i);
             if (!curCell.big)
                 for (int j = 0; j < 6; j++) {
-                    Rock rock = new Rock(i < 7 ? "black" : "white");
-                    rock.setImage(new Image((i < 7 ? black : white)));
+                    Rock rock = new Rock();
+                    rock.setImage(i < 7 ? white : black);
                     curCell.addRock(rock);
                 }
         }
-//        counter();
+    }
+
+    public void setFlowPanes() {
+        this.flowPanes = new FlowPane[14];
+        this.flowPanes[0] = W1;
+        this.flowPanes[1] = W2;
+        this.flowPanes[2] = W3;
+        this.flowPanes[3] = W4;
+        this.flowPanes[4] = W5;
+        this.flowPanes[5] = W6;
+        this.flowPanes[6] = WB;
+        this.flowPanes[7] = B1;
+        this.flowPanes[8] = B2;
+        this.flowPanes[9] = B3;
+        this.flowPanes[10] = B4;
+        this.flowPanes[11] = B5;
+        this.flowPanes[12] = B6;
+        this.flowPanes[13] = BB;
+
     }
 
     public void counter(){
@@ -85,5 +127,23 @@ public class Controller {
     public void clickOnCell(MouseEvent e){
         Object view = (Pane)e.getSource();
         System.out.println(view.toString());
+    }
+    public void painter() {
+        for (int i = 0; i < 14; i++) {
+            Cell currentCell = this.cells.getCell(i);
+            for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {
+                flowPanes[i].getChildren().add(currentCell.getRock().getImage());
+            }
+        }
+    }
+
+    void moveToKalah(int ind, Player player) {
+        for (int i = 0; i < cells.getCell(ind).getNumberOfRocks(); i++) {
+            Rock cr = cells.getCell(ind).getAndRemoveRock();
+            if (player == player1)
+                cells.getCell(6).addRock(cr);
+            else
+                cells.getCell(13).addRock(cr);
+        }
     }
 }

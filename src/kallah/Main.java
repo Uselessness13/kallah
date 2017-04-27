@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
         primaryStage.setTitle("kallah");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.setResizable(false);
         primaryStage.show();
         double i = 0.0d;
