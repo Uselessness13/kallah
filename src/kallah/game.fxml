@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -26,5 +27,6 @@
       <FlowPane fx:id="B3" layoutX="520.0" layoutY="44.0" onMouseClicked="#clickOnCell" prefHeight="107.0" prefWidth="107.0" />
       <FlowPane fx:id="B2" layoutX="639.0" layoutY="44.0" onMouseClicked="#clickOnCell" prefHeight="107.0" prefWidth="107.0" />
       <FlowPane fx:id="B1" layoutX="759.0" layoutY="44.0" onMouseClicked="#clickOnCell" prefHeight="107.0" prefWidth="107.0" />
+      <Label fx:id="ng" layoutX="27.0" layoutY="326.0" onMouseClicked="#newGame" prefHeight="137.0" prefWidth="346.0" />
    </children>
 </AnchorPane>

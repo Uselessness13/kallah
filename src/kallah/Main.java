@@ -26,6 +26,5 @@ public class Main extends Application {
             i+=0.01;
             Thread.sleep(5);
         }
-        Controller controller = new Controller();controller.newGame();
     }
 }

@@ -1,58 +1,45 @@
 package kallah;
 
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import kallah.Cell;
-import kallah.Player;
-import java.util.ArrayList;
+import sun.plugin2.message.Message;
+
+import java.awt.*;
 
 public class Controller {
-    ImageView black = new ImageView("kallah/black.png");
-    ImageView white = new ImageView("kallah/white.png");
+    ImageView black = new ImageView("Images/black.png");
+    ImageView white = new ImageView("Images/white.png");
     Player player1;
     Player player2;
+    private Player activePlyer;
     CircleArray cells;
-    @FXML
-    FlowPane BB;
-    @FXML
-    FlowPane B1;
-    @FXML
-    FlowPane B2;
-    @FXML
-    FlowPane B3;
-    @FXML
-    FlowPane B4;
-    @FXML
-    FlowPane B5;
-    @FXML
-    FlowPane B6;
-    @FXML
-    FlowPane WB;
-    @FXML
-    FlowPane W1;
-    @FXML
-    FlowPane W2;
-    @FXML
-    FlowPane W3;
-    @FXML
-    FlowPane W4;
-    @FXML
-    FlowPane W5;
-    @FXML
-    FlowPane W6;
+    //private FlowPane[] flowPanes;
+    FP fp;
+    boolean gameStarted = false;
 
-    FlowPane[] flowPanes;
+    public FlowPane BB;
+    public FlowPane B1;
+    public FlowPane B2;
+    public FlowPane B3;
+    public FlowPane B4;
+    public FlowPane B5;
+    public FlowPane B6;
+    public FlowPane WB;
+    public FlowPane W1;
+    public FlowPane W2;
+    public FlowPane W3;
+    public FlowPane W4;
+    public FlowPane W5;
+    public FlowPane W6;
 
-    public void newGame(){
+    public void newGame() {
+        gameStarted = true;
         setFlowPanes();
         player1 = new Player(true);
         player2 = new Player(false);
+        activePlyer = player1;
         setCells();
         painter();
 //        counter();
@@ -100,39 +87,97 @@ public class Controller {
         }
     }
 
-    public void setFlowPanes() {
-        this.flowPanes = new FlowPane[14];
-        this.flowPanes[0] = W1;
-        this.flowPanes[1] = W2;
-        this.flowPanes[2] = W3;
-        this.flowPanes[3] = W4;
-        this.flowPanes[4] = W5;
-        this.flowPanes[5] = W6;
-        this.flowPanes[6] = WB;
-        this.flowPanes[7] = B1;
-        this.flowPanes[8] = B2;
-        this.flowPanes[9] = B3;
-        this.flowPanes[10] = B4;
-        this.flowPanes[11] = B5;
-        this.flowPanes[12] = B6;
-        this.flowPanes[13] = BB;
+    private class FP {
+        FlowPane[] flowPanes;
 
+        FP() {
+            flowPanes = new FlowPane[14];
+            flowPanes[1] = W2;
+            flowPanes[0] = W1;
+            flowPanes[2] = W3;
+            flowPanes[3] = W4;
+            flowPanes[4] = W5;
+            flowPanes[5] = W6;
+            flowPanes[6] = WB;
+            flowPanes[7] = B1;
+            flowPanes[8] = B2;
+            flowPanes[9] = B3;
+            flowPanes[10] = B4;
+            flowPanes[11] = B5;
+            flowPanes[12] = B6;
+            flowPanes[13] = BB;
+        }
+
+        FlowPane getFP(int i) {
+            return flowPanes[i];
+        }
     }
 
-    public void counter(){
+    public void setFlowPanes() {
+//
+//        this.flowPanes = new FlowPane[14];
+//        this.flowPanes[0] = W1;
+//        this.flowPanes[1] = W2;
+//        this.flowPanes[2] = W3;
+//        this.flowPanes[3] = W4;
+//        this.flowPanes[4] = W5;
+//        this.flowPanes[5] = W6;
+//        this.flowPanes[6] = WB;
+//        this.flowPanes[7] = B1;
+//        this.flowPanes[8] = B2;
+//        this.flowPanes[9] = B3;
+//        this.flowPanes[10] = B4;
+//        this.flowPanes[11] = B5;
+//        this.flowPanes[12] = B6;
+//        this.flowPanes[13] = BB;
+//        for (int i = 0; i < 14; i++) {
+//            System.out.println("this.flowPanes["+i+"] = " + this.flowPanes[i]);
+//        }
+        fp = new FP();
+    }
+
+    public void counter() {
         player1.setCount(cells.getCell(0).getNumberOfRocks());
         player2.setCount(cells.getCell(7).getNumberOfRocks());
     }
 
-    public void clickOnCell(MouseEvent e){
-        Object view = (Pane)e.getSource();
+    public void clickOnCell(MouseEvent e) {
+        Object view = (FlowPane) e.getSource();
         System.out.println(view.toString());
+        if (gameStarted) {
+            int ind = -1;
+            for (int i = 0; i < 14; i++) {
+                if (fp.getFP(i).equals(view))
+                    ind = i;
+            }
+            System.out.println(ind);
+            Cell endCell = null;
+            Cell startCell = null;
+            int startCellRocks = -1;
+            if (ind >= 0) {
+                startCell = cells.getCell(ind);
+                startCellRocks = startCell.getNumberOfRocks();
+                endCell = cells.moveRocks(ind, activePlyer);
+            }
+            if (endCell != null) {
+                if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
+                    moveToKalah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
+                } else if (!endCell.isBig()) {
+                    activePlyer = activePlyer == player1 ? player2 : player1;
+                }
+            }
+            painter();
+            counter();
+        }
+
     }
+
     public void painter() {
         for (int i = 0; i < 14; i++) {
             Cell currentCell = this.cells.getCell(i);
             for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {
-                flowPanes[i].getChildren().add(currentCell.getRock().getImage());
+                System.out.println(fp.getFP(i).getChildren());
+                fp.getFP(i).getChildren().add(currentCell.getRock().getImage());
             }
         }
     }

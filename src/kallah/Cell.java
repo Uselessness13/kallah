@@ -50,4 +50,12 @@ public class Cell {
     public Rock getRock() {
         return this.rocks.get(this.rocks.size() - 1);
     }
+
+    public boolean isBig() {
+        return this.big;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
 }
