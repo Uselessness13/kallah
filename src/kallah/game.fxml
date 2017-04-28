@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
    <children>
@@ -28,5 +29,13 @@
       <FlowPane fx:id="B2" layoutX="639.0" layoutY="44.0" onMouseClicked="#clickOnCell" prefHeight="107.0" prefWidth="107.0" />
       <FlowPane fx:id="B1" layoutX="759.0" layoutY="44.0" onMouseClicked="#clickOnCell" prefHeight="107.0" prefWidth="107.0" />
       <Label fx:id="ng" layoutX="27.0" layoutY="326.0" onMouseClicked="#newGame" prefHeight="137.0" prefWidth="346.0" />
+      <Label fx:id="pl2" layoutX="62.0" layoutY="58.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font></Label>
+      <Label fx:id="pl1" layoutX="871.0" layoutY="58.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font></Label>
    </children>
 </AnchorPane>

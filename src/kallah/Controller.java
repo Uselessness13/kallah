@@ -1,18 +1,20 @@
 package kallah;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import sun.plugin2.message.Message;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
-    ImageView black = new ImageView("Images/black.png");
-    ImageView white = new ImageView("Images/white.png");
-    Player player1;
+    ImageView blackP = new ImageView("Images/black.png");
+    ImageView whiteP = new ImageView("Images/white.png");
+    String white = "Images/white.png";
+    String black = "Images/black.png";
     Player player2;
+    Player player1;
     private Player activePlyer;
     CircleArray cells;
     //private FlowPane[] flowPanes;
@@ -33,6 +35,8 @@ public class Controller {
     public FlowPane W4;
     public FlowPane W5;
     public FlowPane W6;
+    public Label pl1;
+    public Label pl2;
 
     public void newGame() {
         gameStarted = true;
@@ -81,8 +85,9 @@ public class Controller {
             if (!curCell.big)
                 for (int j = 0; j < 6; j++) {
                     Rock rock = new Rock();
-                    rock.setImage(i < 7 ? white : black);
-                    curCell.addRock(rock);
+                    rock.setImage(new ImageView(i < 7 ? white : black));
+                    if (!curCell.isBig())
+                        curCell.addRock(rock);
                 }
         }
     }
@@ -139,31 +144,39 @@ public class Controller {
     public void counter() {
         player1.setCount(cells.getCell(0).getNumberOfRocks());
         player2.setCount(cells.getCell(7).getNumberOfRocks());
+        pl1.setText(String.valueOf(player1.getCount()));
+        pl2.setText(String.valueOf(player2.getCount()));
     }
 
     public void clickOnCell(MouseEvent e) {
         Object view = (FlowPane) e.getSource();
-        System.out.println(view.toString());
+        //System.out.println(view.toString());
+        painter();
         if (gameStarted) {
             int ind = -1;
             for (int i = 0; i < 14; i++) {
                 if (fp.getFP(i).equals(view))
                     ind = i;
             }
-            System.out.println(ind);
-            Cell endCell = null;
-            Cell startCell = null;
-            int startCellRocks = -1;
-            if (ind >= 0) {
-                startCell = cells.getCell(ind);
-                startCellRocks = startCell.getNumberOfRocks();
-                endCell = cells.moveRocks(ind, activePlyer);
-            }
-            if (endCell != null) {
-                if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
-                    moveToKalah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
-                } else if (!endCell.isBig()) {
-                    activePlyer = activePlyer == player1 ? player2 : player1;
+            if (cells.getCell(ind).player == activePlyer && !cells.getCell(ind).isBig()) {
+                System.out.println(ind);
+                Cell endCell = null;
+                Cell startCell = null;
+                int startCellRocks = -1;
+                if (ind >= 0) {
+                    startCell = cells.getCell(ind);
+                    startCellRocks = startCell.getNumberOfRocks();
+                    endCell = cells.moveRocks(ind, activePlyer);
+                    painter();
+                }
+                if (endCell != null) {
+                    if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
+                        moveToKalah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
+                    } else if (!endCell.isBig()) {
+                        System.out.println("hod pereshel");
+                        activePlyer = activePlyer == player1 ? player2 : player1;
+                    }
+                    painter();
                 }
             }
             painter();
@@ -175,10 +188,12 @@ public class Controller {
     public void painter() {
         for (int i = 0; i < 14; i++) {
             Cell currentCell = this.cells.getCell(i);
+            fp.getFP(i).getChildren().clear();
+            List<ImageView> viewList = new ArrayList<>();
             for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {
-                System.out.println(fp.getFP(i).getChildren());
-                fp.getFP(i).getChildren().add(currentCell.getRock().getImage());
+                viewList.add(currentCell.getRock(j).getImage());
             }
+            fp.getFP(i).getChildren().addAll(viewList);
         }
     }
 

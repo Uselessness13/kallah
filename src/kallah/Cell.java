@@ -47,8 +47,8 @@ public class Cell {
         return this.against;
     }
 
-    public Rock getRock() {
-        return this.rocks.get(this.rocks.size() - 1);
+    public Rock getRock(int i) {
+        return this.rocks.get(i);
     }
 
     public boolean isBig() {
