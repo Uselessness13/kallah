@@ -20,6 +20,7 @@ public class Controller {
     //private FlowPane[] flowPanes;
     FP fp;
     boolean gameStarted = false;
+    boolean gameEnded = false;
 
     public FlowPane BB;
     public FlowPane B1;
@@ -41,12 +42,12 @@ public class Controller {
     public void newGame() {
         gameStarted = true;
         setFlowPanes();
-        player1 = new Player(true);
-        player2 = new Player(false);
+        player1 = new Player();
+        player2 = new Player();
         activePlyer = player1;
         setCells();
         painter();
-//        counter();
+        counter();
     }
 
     private void setCells() {
@@ -66,23 +67,23 @@ public class Controller {
         this.cells.addCell(12, new Cell(false, player2));
         this.cells.addCell(13, new Cell(true, player2));
 
-        this.cells.getCell(0).setAgainst(this.cells.getCell(7));
-        this.cells.getCell(1).setAgainst(this.cells.getCell(8));
-        this.cells.getCell(2).setAgainst(this.cells.getCell(9));
-        this.cells.getCell(3).setAgainst(this.cells.getCell(10));
-        this.cells.getCell(4).setAgainst(this.cells.getCell(11));
-        this.cells.getCell(5).setAgainst(this.cells.getCell(12));
+        this.cells.getCell(0).setAgainst(this.cells.getCell(12));
+        this.cells.getCell(1).setAgainst(this.cells.getCell(11));
+        this.cells.getCell(2).setAgainst(this.cells.getCell(10));
+        this.cells.getCell(3).setAgainst(this.cells.getCell(9));
+        this.cells.getCell(4).setAgainst(this.cells.getCell(8));
+        this.cells.getCell(5).setAgainst(this.cells.getCell(7));
 
-        this.cells.getCell(12).setAgainst(this.cells.getCell(5));
-        this.cells.getCell(11).setAgainst(this.cells.getCell(4));
-        this.cells.getCell(10).setAgainst(this.cells.getCell(3));
-        this.cells.getCell(9).setAgainst(this.cells.getCell(2));
-        this.cells.getCell(8).setAgainst(this.cells.getCell(1));
-        this.cells.getCell(7).setAgainst(this.cells.getCell(0));
+        this.cells.getCell(12).setAgainst(this.cells.getCell(0));
+        this.cells.getCell(11).setAgainst(this.cells.getCell(1));
+        this.cells.getCell(10).setAgainst(this.cells.getCell(2));
+        this.cells.getCell(9).setAgainst(this.cells.getCell(3));
+        this.cells.getCell(8).setAgainst(this.cells.getCell(4));
+        this.cells.getCell(7).setAgainst(this.cells.getCell(5));
 
         for (int i = 0; i < 14; i++) {
             Cell curCell = this.cells.getCell(i);
-            if (!curCell.big)
+            if (!curCell.isBig())
                 for (int j = 0; j < 6; j++) {
                     Rock rock = new Rock();
                     rock.setImage(new ImageView(i < 7 ? white : black));
@@ -142,15 +143,40 @@ public class Controller {
     }
 
     public void counter() {
-        player1.setCount(cells.getCell(0).getNumberOfRocks());
-        player2.setCount(cells.getCell(7).getNumberOfRocks());
+        player1.setCount(cells.getCell(6).getNumberOfRocks());
+        player2.setCount(cells.getCell(13).getNumberOfRocks());
         pl1.setText(String.valueOf(player1.getCount()));
         pl2.setText(String.valueOf(player2.getCount()));
+        if (player1.getCount() >= 36 || player1.getCount() >= 36) {
+            gameStarted = false;
+        }
+        checkForWin();
+    }
+
+    void checkForWin() {
+        boolean win1 = false;
+        boolean win2 = false;
+        boolean lp1 = false;
+        boolean lp2 = false;
+
+        for (int i = 0; i < 6; i++) {
+            if (cells.getCell(i).getNumberOfRocks() == 0) {
+                lp1 = true;
+            }
+            if (cells.getCell(i + 6).getNumberOfRocks() == 0) {
+                lp2 = true;
+            }
+        }
+        if (lp2)
+            win1 = true;
+        if (lp1)
+            win2 = true;
+        gameEnded = win1 || win2;
     }
 
     public void clickOnCell(MouseEvent e) {
         Object view = (FlowPane) e.getSource();
-        //System.out.println(view.toString());
+        System.out.println(view.toString());
         painter();
         if (gameStarted) {
             int ind = -1;
@@ -159,7 +185,6 @@ public class Controller {
                     ind = i;
             }
             if (cells.getCell(ind).player == activePlyer && !cells.getCell(ind).isBig()) {
-                System.out.println(ind);
                 Cell endCell = null;
                 Cell startCell = null;
                 int startCellRocks = -1;
@@ -171,7 +196,8 @@ public class Controller {
                 }
                 if (endCell != null) {
                     if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
-                        moveToKalah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
+                        cells.moveToKallah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
+                        activePlyer = activePlyer == player1 ? player2 : player1;
                     } else if (!endCell.isBig()) {
                         System.out.println("hod pereshel");
                         activePlyer = activePlyer == player1 ? player2 : player1;
@@ -194,16 +220,6 @@ public class Controller {
                 viewList.add(currentCell.getRock(j).getImage());
             }
             fp.getFP(i).getChildren().addAll(viewList);
-        }
-    }
-
-    void moveToKalah(int ind, Player player) {
-        for (int i = 0; i < cells.getCell(ind).getNumberOfRocks(); i++) {
-            Rock cr = cells.getCell(ind).getAndRemoveRock();
-            if (player == player1)
-                cells.getCell(6).addRock(cr);
-            else
-                cells.getCell(13).addRock(cr);
         }
     }
 }

@@ -24,17 +24,31 @@ class CircleArray {
     Cell moveRocks(int ind, Player player) {
         Cell indCell = cells[ind];
         Cell cc = null;
-        for (int i = 0; i < indCell.rocks.size(); i++) {
+        int i = 0;
+        int nr = indCell.getNumberOfRocks();
+        while( i < nr) {
             Rock cr = indCell.getAndRemoveRock();
-            cc = getCell(ind + i + 1);
+            cc = getCell(ind + 1 + i);
             if (cc.isBig()) {
                 if (cc.getPlayer() == player) {
                     cc.addRock(cr);
-                } else continue;
+                }
             }
             else cc.addRock(cr);
+            i++;
         }
         return cc;
+    }
+
+    void moveToKallah(int ind, Player player) {
+        int nr = cells[ind].getNumberOfRocks();
+        for (int i = 0; i < nr; i++) {
+            Rock cr = cells[ind].getAndRemoveRock();
+            if (player == cells[6].getPlayer())
+                cells[6].addRock(cr);
+            else
+                cells[13].addRock(cr);
+        }
     }
 
     int getIndexOfCell(Cell cell) {

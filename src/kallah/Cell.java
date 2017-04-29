@@ -12,26 +12,22 @@ import java.util.List;
  */
 public class Cell {
     Cell nextCell;
-    Cell against;
+    private Cell against;
     Player player;
-    List<Rock> rocks;
-    boolean big;
-    FlowPane pane;
+    private List<Rock> rocks;
+    private boolean big;
     Cell(boolean big, Player player){
-        rocks = new ArrayList<Rock>();
+        rocks = new ArrayList<>();
         this.player = player;
         setBig(big);
     }
-    void addRock(Rock rock){
-        rocks.add(rock);
-        //pane.getChildren().add(new ImageView(rock.image));//hz
-    }
-    public void removeRock(){
+    void addRock(Rock rock){ rocks.add(rock); }
+    private void removeRock(){
         rocks.remove(rocks.size()-1);
     }
-    Rock getAndRemoveRock(){Rock ret = rocks.get(rocks.size()-1); rocks.remove(rocks.size()-1); return ret;}
+    Rock getAndRemoveRock(){Rock ret = rocks.get(rocks.size()-1); removeRock(); return ret;}
 
-    public int getNumberOfRocks(){
+    int getNumberOfRocks(){
         return rocks.size();
     }
 
@@ -39,23 +35,23 @@ public class Cell {
         this.big = big;
     }
 
-    public void setAgainst(Cell against) {
+    void setAgainst(Cell against) {
         this.against = against;
     }
 
-    public Cell getAgainst() {
+    Cell getAgainst() {
         return this.against;
     }
 
-    public Rock getRock(int i) {
+    Rock getRock(int i) {
         return this.rocks.get(i);
     }
 
-    public boolean isBig() {
+    boolean isBig() {
         return this.big;
     }
 
-    public Player getPlayer() {
+    Player getPlayer() {
         return this.player;
     }
 }
