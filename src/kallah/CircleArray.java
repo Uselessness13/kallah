@@ -18,7 +18,7 @@ class CircleArray {
     }
 
     Cell getCell(int ind) {
-        return ind < amount ? cells[ind] : cells[Math.abs(amount - ind)];
+        return ind < amount ? cells[ind] : cells[ind % amount];
     }
 
     Cell moveRocks(int ind, Player player) {

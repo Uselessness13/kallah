@@ -146,6 +146,7 @@ public class Controller {
         player1.setCount(cells.getCell(6).getNumberOfRocks());
         player2.setCount(cells.getCell(13).getNumberOfRocks());
         pl1.setText(String.valueOf(player1.getCount()));
+
         pl2.setText(String.valueOf(player2.getCount()));
         if (player1.getCount() >= 36 || player1.getCount() >= 36) {
             gameStarted = false;
@@ -154,29 +155,21 @@ public class Controller {
     }
 
     void checkForWin() {
-        boolean win1 = false;
-        boolean win2 = false;
         boolean lp1 = false;
         boolean lp2 = false;
-
         for (int i = 0; i < 6; i++) {
-            if (cells.getCell(i).getNumberOfRocks() == 0) {
+            if (cells.getCell(i).getNumberOfRocks() > 0) {
                 lp1 = true;
             }
-            if (cells.getCell(i + 6).getNumberOfRocks() == 0) {
+            if (cells.getCell(i + 1 + 6).getNumberOfRocks() > 0) {
                 lp2 = true;
             }
         }
-        if (lp2)
-            win1 = true;
-        if (lp1)
-            win2 = true;
-        gameEnded = win1 || win2;
+        gameStarted = lp1 && lp2;
     }
 
     public void clickOnCell(MouseEvent e) {
         Object view = (FlowPane) e.getSource();
-        System.out.println(view.toString());
         painter();
         if (gameStarted) {
             int ind = -1;
@@ -199,7 +192,6 @@ public class Controller {
                         cells.moveToKallah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
                         activePlyer = activePlyer == player1 ? player2 : player1;
                     } else if (!endCell.isBig()) {
-                        System.out.println("hod pereshel");
                         activePlyer = activePlyer == player1 ? player2 : player1;
                     }
                     painter();
