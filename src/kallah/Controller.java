@@ -40,6 +40,7 @@ public class Controller {
     public FlowPane W6;
     public Label pl1;
     public Label pl2;
+    public Label pl3;
 
     public void newGame() {
         gameStarted = true;
@@ -50,6 +51,7 @@ public class Controller {
         setCells();
         painter();
         counter();
+        pl3.setText("Ваш ход"); //первое уточнение игрока
     }
 
     private void setCells() {
@@ -147,6 +149,14 @@ public class Controller {
         checkForWin();
     }
 
+    public void recognize() {  //вывод игрока
+        if (activePlyer == player1){
+            pl3.setText("Ваш ход");}
+            else {
+            pl3.setText("Ход соперника");
+        }
+    }
+
     private void checkForWin() {
         boolean lp1 = false;
         boolean lp2 = false;
@@ -192,6 +202,8 @@ public class Controller {
             }
             painter();
             counter();
+            recognize(); //вывод игрока
+
         }
 
     }

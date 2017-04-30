@@ -7,33 +7,38 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
+<AnchorPane prefHeight="559.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
    <children>
-      <ImageView fitHeight="483.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="579.0" fitWidth="981.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <image>
-            <Image url="@../Images/board.png" />
-         </image></ImageView>
-      <FlowPane fx:id="BB" layoutX="45.0" layoutY="81.0" onMouseClicked="#clickOnCell" prefHeight="153.0" prefWidth="111.0" />
-      <FlowPane fx:id="WB" layoutX="871.0" layoutY="79.0" onMouseClicked="#clickOnCell" prefHeight="153.0" prefWidth="111.0" />
-      <FlowPane fx:id="W1" layoutX="159.0" layoutY="163.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="W2" layoutX="279.0" layoutY="160.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="W3" layoutX="400.0" layoutY="161.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="W4" layoutX="520.0" layoutY="162.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="W5" layoutX="638.0" layoutY="162.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="W6" layoutX="757.0" layoutY="162.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
+            <Image url="@board.png" />
+         </image>
+      </ImageView>
+      <FlowPane fx:id="BB" layoutX="31.0" layoutY="223.0" onMouseClicked="#clickOnCell" prefHeight="161.0" prefWidth="122.0" />
+      <FlowPane fx:id="WB" layoutX="828.0" layoutY="223.0" onMouseClicked="#clickOnCell" prefHeight="161.0" prefWidth="122.0" />
+      <FlowPane fx:id="W1" layoutX="157.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="W2" layoutX="270.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="W3" layoutX="383.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="W4" layoutX="496.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="W5" layoutX="609.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="W6" layoutX="721.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
 
-      <FlowPane fx:id="B6" layoutX="159.0" layoutY="42.0" onMouseClicked="#clickOnCell" prefHeight="110.0" prefWidth="111.0" />
-      <FlowPane fx:id="B5" layoutX="279.0" layoutY="42.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="B4" layoutX="399.0" layoutY="43.0" onMouseClicked="#clickOnCell" prefHeight="109.0" prefWidth="110.0" />
-      <FlowPane fx:id="B3" layoutX="517.0" layoutY="42.0" onMouseClicked="#clickOnCell" prefHeight="110.0" prefWidth="110.0" />
-      <FlowPane fx:id="B2" layoutX="637.0" layoutY="43.0" onMouseClicked="#clickOnCell" prefHeight="110.0" prefWidth="110.0" />
-      <FlowPane fx:id="B1" layoutX="757.0" layoutY="43.0" onMouseClicked="#clickOnCell" prefHeight="110.0" prefWidth="110.0" />
-      <Label fx:id="ng" layoutX="27.0" layoutY="326.0" onMouseClicked="#newGame" prefHeight="137.0" prefWidth="346.0" />
-      <Label fx:id="pl2" layoutX="670.0" layoutY="370.0" textFill="WHITE">
+                  <FlowPane fx:id="B6" layoutX="157.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="B5" layoutX="270.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="B4" layoutX="382.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="B3" layoutX="495.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="B2" layoutX="609.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <FlowPane fx:id="B1" layoutX="721.0" layoutY="171.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
+      <Label fx:id="ng" layoutX="112.0" layoutY="458.0" onMouseClicked="#newGame" prefHeight="112.0" prefWidth="278.0" />
+      <Label fx:id="pl2" layoutX="570.0" layoutY="490.0" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="36.0" />
          </font></Label>
-      <Label fx:id="pl1" layoutX="780.0" layoutY="370.0" textFill="WHITE">
+      <Label fx:id="pl1" layoutX="670.0" layoutY="490.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font></Label>
+      <Label fx:id="pl3" layoutX="325.0" layoutY="32.0" prefHeight="89.0" prefWidth="293.0" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="36.0" />
          </font></Label>
