@@ -3,7 +3,11 @@ package kallah;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +24,6 @@ public class Controller {
     //private FlowPane[] flowPanes;
     FP fp;
     boolean gameStarted = false;
-    boolean gameEnded = false;
-
     public FlowPane BB;
     public FlowPane B1;
     public FlowPane B2;
@@ -119,42 +121,33 @@ public class Controller {
         }
     }
 
-    public void setFlowPanes() {
-//
-//        this.flowPanes = new FlowPane[14];
-//        this.flowPanes[0] = W1;
-//        this.flowPanes[1] = W2;
-//        this.flowPanes[2] = W3;
-//        this.flowPanes[3] = W4;
-//        this.flowPanes[4] = W5;
-//        this.flowPanes[5] = W6;
-//        this.flowPanes[6] = WB;
-//        this.flowPanes[7] = B1;
-//        this.flowPanes[8] = B2;
-//        this.flowPanes[9] = B3;
-//        this.flowPanes[10] = B4;
-//        this.flowPanes[11] = B5;
-//        this.flowPanes[12] = B6;
-//        this.flowPanes[13] = BB;
-//        for (int i = 0; i < 14; i++) {
-//            System.out.println("this.flowPanes["+i+"] = " + this.flowPanes[i]);
-//        }
+
+    private void setFlowPanes() {
         fp = new FP();
     }
 
-    public void counter() {
+    private void counter() {
         player1.setCount(cells.getCell(6).getNumberOfRocks());
         player2.setCount(cells.getCell(13).getNumberOfRocks());
         pl1.setText(String.valueOf(player1.getCount()));
-
         pl2.setText(String.valueOf(player2.getCount()));
+        // Вот тут для индикации надо
+//        if (activePlyer == player1){
+//            pl1.setBackground();
+//            pl2.setBackground(null);
+//        }
+//        else {
+//            pl2.setBackground();
+//            pl1.setBackground(null);
+//        }
+
         if (player1.getCount() >= 36 || player1.getCount() >= 36) {
             gameStarted = false;
         }
         checkForWin();
     }
 
-    void checkForWin() {
+    private void checkForWin() {
         boolean lp1 = false;
         boolean lp2 = false;
         for (int i = 0; i < 6; i++) {
