@@ -150,11 +150,7 @@ public class Controller {
     }
 
     public void recognize() {  //вывод игрока
-        if (activePlyer == player1){
-            pl3.setText("Ваш ход");}
-            else {
-            pl3.setText("Ход соперника");
-        }
+        pl3.setText(activePlyer == player1 ? "ХИЩНИК" : "ЧУЖОЙ");
     }
 
     private void checkForWin() {

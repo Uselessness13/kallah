@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="559.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
+<AnchorPane prefHeight="559.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kallah.Controller">
    <children>
       <ImageView fitHeight="579.0" fitWidth="981.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <image>
             <Image url="@board.png" />
          </image>
       </ImageView>
-      <FlowPane fx:id="BB" layoutX="31.0" layoutY="223.0" onMouseClicked="#clickOnCell" prefHeight="161.0" prefWidth="122.0" />
-      <FlowPane fx:id="WB" layoutX="828.0" layoutY="223.0" onMouseClicked="#clickOnCell" prefHeight="161.0" prefWidth="122.0" />
+      <FlowPane fx:id="BB" layoutX="29.0" layoutY="214.0" onMouseClicked="#clickOnCell" prefHeight="178.0" prefWidth="124.0" />
+      <FlowPane fx:id="WB" layoutX="828.0" layoutY="216.0" onMouseClicked="#clickOnCell" prefHeight="173.0" prefWidth="122.0" />
       <FlowPane fx:id="W1" layoutX="157.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
       <FlowPane fx:id="W2" layoutX="270.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
       <FlowPane fx:id="W3" layoutX="383.0" layoutY="310.0" onMouseClicked="#clickOnCell" prefHeight="128.0" prefWidth="103.0" />
