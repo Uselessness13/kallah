@@ -179,6 +179,7 @@ public class Controller {
         painter();
         if (gameStarted) {
             if (activePlyer == player2 && ai != null) {
+                observer();
                 activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
             } else {
                 for (int i = 0; i < 14; i++) {
@@ -186,23 +187,30 @@ public class Controller {
                         if (firstStep) {
                             if (i != 0) {
                                 activePlyer = board.makeStep(i, activePlyer);
+                                observer();
                                 firstStep = false;
                                 if (activePlyer == player2 && ai != null) {
                                     activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
                                 }
                             }
-                        } else {activePlyer = board.makeStep(i, activePlyer);if (activePlyer == player2 && ai != null) {
-                            activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
-                        }}
+                        } else {
+                            activePlyer = board.makeStep(i, activePlyer);
+                            observer();
+                            if (activePlyer == player2 && ai != null) {
+                                activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                            }
+                        }
                 }
             }
-            cells = board.getBoard();
-            painter();
-            counter();
-            recognize(); //вывод игрока
-
+            observer();
         }
+    }
 
+    void observer(){
+        cells = board.getBoard();
+        painter();
+        counter();
+        recognize();
     }
 
     public void painter() {

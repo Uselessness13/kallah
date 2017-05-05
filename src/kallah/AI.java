@@ -19,7 +19,7 @@ public class AI extends Player{
     public int calculate(CircleArray board) {
         this.cells = board;
         ArrayList<Integer> availibleMoves = new ArrayList<>();
-        for (int i = 7; i < 14; i++) {
+        for (int i = 7; i < 13; i++) {
             if (cells.getCell(i).getNumberOfRocks() > 0)
                 availibleMoves.add(i);
         }
