@@ -1,5 +1,6 @@
 package kallah;
 
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,13 +18,14 @@ public class Controller {
     ImageView whiteP = new ImageView("Images/white.png");
     String white = "Images/white.png";
     String black = "Images/black.png";
-    Player player2;
-    Player player1;
+    public Player player2;
+    public Player player1;
     private Player activePlyer;
     CircleArray cells;
-    //private FlowPane[] flowPanes;
+    Board board;
     FP fp;
     boolean gameStarted = false;
+    boolean firstStep = true;
     public FlowPane BB;
     public FlowPane B1;
     public FlowPane B2;
@@ -41,17 +43,28 @@ public class Controller {
     public Label pl1;
     public Label pl2;
     public Label pl3;
+    public CheckBox IIDetector;
+    boolean wai = false;
+    AI ai;
 
     public void newGame() {
         gameStarted = true;
         setFlowPanes();
         player1 = new Player();
+        if (wai) {
+            ai = new AI(cells);
+        }
         player2 = new Player();
         activePlyer = player1;
         setCells();
+        board = new Board(cells, player1, player2);
         painter();
         counter();
         pl3.setText("Ваш ход"); //первое уточнение игрока
+    }
+
+    public void IIDetector() {
+        wai = !wai;
     }
 
     private void setCells() {
@@ -133,26 +146,16 @@ public class Controller {
         player2.setCount(cells.getCell(13).getNumberOfRocks());
         pl1.setText(String.valueOf(player1.getCount()));
         pl2.setText(String.valueOf(player2.getCount()));
-        // Вот тут для индикации надо
-//        if (activePlyer == player1){
-//            pl1.setBackground();
-//            pl2.setBackground(null);
-//        }
-//        else {
-//            pl2.setBackground();
-//            pl1.setBackground(null);
-//        }
-
         if (player1.getCount() >= 36 || player1.getCount() >= 36) {
             gameStarted = false;
         }
         checkForWin();
     }
 
-    public void recognize() {  //вывод игрока
-        if (activePlyer == player1){
-            pl3.setText("Ваш ход");}
-            else {
+    private void recognize() {
+        if (activePlyer == player1) {
+            pl3.setText("Ваш ход");
+        } else {
             pl3.setText("Ход соперника");
         }
     }
@@ -175,31 +178,25 @@ public class Controller {
         Object view = (FlowPane) e.getSource();
         painter();
         if (gameStarted) {
-            int ind = -1;
-            for (int i = 0; i < 14; i++) {
-                if (fp.getFP(i).equals(view))
-                    ind = i;
-            }
-            if (cells.getCell(ind).player == activePlyer && !cells.getCell(ind).isBig()) {
-                Cell endCell = null;
-                Cell startCell = null;
-                int startCellRocks = -1;
-                if (ind >= 0) {
-                    startCell = cells.getCell(ind);
-                    startCellRocks = startCell.getNumberOfRocks();
-                    endCell = cells.moveRocks(ind, activePlyer);
-                    painter();
-                }
-                if (endCell != null) {
-                    if (endCell.getNumberOfRocks() == 1 && endCell.getAgainst() != null) {
-                        cells.moveToKallah(cells.getIndexOfCell(endCell.getAgainst()), activePlyer);
-                        activePlyer = activePlyer == player1 ? player2 : player1;
-                    } else if (!endCell.isBig()) {
-                        activePlyer = activePlyer == player1 ? player2 : player1;
-                    }
-                    painter();
+            if (activePlyer == player2 && ai != null) {
+                activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+            } else {
+                for (int i = 0; i < 14; i++) {
+                    if (fp.getFP(i).equals(view))
+                        if (firstStep) {
+                            if (i != 0) {
+                                activePlyer = board.makeStep(i, activePlyer);
+                                firstStep = false;
+                                if (activePlyer == player2 && ai != null) {
+                                    activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                                }
+                            }
+                        } else {activePlyer = board.makeStep(i, activePlyer);if (activePlyer == player2 && ai != null) {
+                            activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                        }}
                 }
             }
+            cells = board.getBoard();
             painter();
             counter();
             recognize(); //вывод игрока

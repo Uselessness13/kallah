@@ -1,3 +1,7 @@
 .start-button {
     -fx-background-image: url("../Images/bear.png");
 }
+.hod {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}

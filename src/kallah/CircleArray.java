@@ -1,9 +1,11 @@
 package kallah;
 
+import java.nio.file.CopyOption;
+
 /**
  * Created by Useless on 20.04.2017.
  */
-class CircleArray {
+class CircleArray implements CopyOption {
     private Cell[] cells;
     private int amount;
 
@@ -26,15 +28,14 @@ class CircleArray {
         Cell cc = null;
         int i = 0;
         int nr = indCell.getNumberOfRocks();
-        while( i < nr) {
+        while (i < nr) {
             Rock cr = indCell.getAndRemoveRock();
             cc = getCell(ind + 1 + i);
             if (cc.isBig()) {
                 if (cc.getPlayer() == player) {
                     cc.addRock(cr);
                 }
-            }
-            else cc.addRock(cr);
+            } else cc.addRock(cr);
             i++;
         }
         return cc;
@@ -58,6 +59,4 @@ class CircleArray {
         }
         return -1;
     }
-
-
 }
