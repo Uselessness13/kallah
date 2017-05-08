@@ -51,13 +51,13 @@ public class Controller {
         gameStarted = true;
         setFlowPanes();
         player1 = new Player();
-        if (wai) {
-            ai = new AI(cells);
-        }
         player2 = new Player();
         activePlyer = player1;
         setCells();
         board = new Board(cells, player1, player2);
+        if (wai) {
+            ai = new AI(board, player2);
+        }
         painter();
         counter();
         pl3.setText("Ваш ход"); //первое уточнение игрока
@@ -180,7 +180,7 @@ public class Controller {
         if (gameStarted) {
             if (activePlyer == player2 && ai != null) {
                 observer();
-                activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                activePlyer = board.makeStep(ai.calculate(board), activePlyer);
             } else {
                 for (int i = 0; i < 14; i++) {
                     if (fp.getFP(i).equals(view))
@@ -190,14 +190,14 @@ public class Controller {
                                 observer();
                                 firstStep = false;
                                 if (activePlyer == player2 && ai != null) {
-                                    activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                                    activePlyer = board.makeStep(ai.calculate(board), activePlyer);
                                 }
                             }
                         } else {
                             activePlyer = board.makeStep(i, activePlyer);
                             observer();
                             if (activePlyer == player2 && ai != null) {
-                                activePlyer = board.makeStep(ai.calculate(board.getBoard()), activePlyer);
+                                activePlyer = board.makeStep(ai.calculate(board), activePlyer);
                             }
                         }
                 }

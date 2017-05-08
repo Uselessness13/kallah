@@ -13,7 +13,7 @@ public class Board {
         this.player2 = player2;
     }
 
-    Player makeStep(int i, Player active){
+    public Player makeStep(int i, Player active){
         if (board.getCell(i).player == active && !board.getCell(i).isBig()) {
             Cell endCell = null;
             Cell startCell = null;
