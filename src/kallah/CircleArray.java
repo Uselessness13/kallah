@@ -35,8 +35,23 @@ class CircleArray implements CopyOption {
         this.addCell(12, new Cell(false, player2));
         this.addCell(13, new Cell(true, player2));
 
-        this.getCell(0).setAgainst(this.getCell(12));
+        setNext(13);
+        setNext(12);
+        setNext(11);
+        setNext(10);
+        setNext(9);
+        setNext(8);
+        setNext(7);
+        setNext(6);
+        setNext(5);
+        setNext(4);
+        setNext(3);
+        setNext(2);
+        setNext(1);
+        setNext(0);
+
         this.getCell(1).setAgainst(this.getCell(11));
+        this.getCell(0).setAgainst(this.getCell(12));
         this.getCell(2).setAgainst(this.getCell(10));
         this.getCell(3).setAgainst(this.getCell(9));
         this.getCell(4).setAgainst(this.getCell(8));
@@ -46,22 +61,34 @@ class CircleArray implements CopyOption {
             Cell curCell = this.getCell(i);
             if (!curCell.isBig())
                 for (int j = 0; j < 6; j++) {
-                    Rock rock = new Rock();
-                    rock.setImage(new ImageView(i < 7 ? white : black));
                     if (!curCell.isBig())
-                        curCell.addRock(rock);
+                        curCell.addRock();
                 }
         }
     }
 
-    CircleArray(CircleArray circleArray){
+    CircleArray(CircleArray circleArray) {
         this.cells = new Cell[14];
         Cell[] cells1 = circleArray.cells;
         for (int i = 0; i < cells1.length; i++) {
             Cell cell = cells1[i];
-
             addCell(i, new Cell(cell.isBig(), cell.getPlayer()));
+            setNext(i);
         }
+        setNext(13);
+        setNext(12);
+        setNext(11);
+        setNext(10);
+        setNext(9);
+        setNext(8);
+        setNext(7);
+        setNext(6);
+        setNext(5);
+        setNext(4);
+        setNext(3);
+        setNext(2);
+        setNext(1);
+        setNext(0);
         this.getCell(0).setAgainst(this.getCell(12));
         this.getCell(1).setAgainst(this.getCell(11));
         this.getCell(2).setAgainst(this.getCell(10));
@@ -71,7 +98,7 @@ class CircleArray implements CopyOption {
 
         for (int i = 0; i < 14; i++) {
             for (int j = 0; j < circleArray.cells[i].getNumberOfRocks(); j++) {
-                this.cells[i].addRock(circleArray.cells[i].getRock(j));
+                this.cells[i].addRock();
             }
         }
     }
@@ -92,7 +119,10 @@ class CircleArray implements CopyOption {
 
     void addCell(int ind, Cell cell) {
         cells[ind] = cell;
-        cells[ind].nextCell = cells[0];
+    }
+
+    void setNext(int ind) {
+        cells[ind].nextCell = cells[ind == 13 ? 0 : ind + 1];
     }
 
     Cell getCell(int ind) {
@@ -102,36 +132,35 @@ class CircleArray implements CopyOption {
 
     Cell moveRocks(int ind, Player player) {
         Cell indCell = cells[ind];
-        Cell cc = null;
+        Cell cc = indCell;
         int i = 0;
         int nr = indCell.getNumberOfRocks();
         while (i < nr) {
-            Rock cr = indCell.getAndRemoveRock();
-            cc = getCell(ind + 1 + i);
+            indCell.removeRock();
+            cc = cc.nextCell;
+            System.out.println(cc);
             if (cc.isBig()) {
                 if (cc.getPlayer() == player) {
-                    cc.addRock(cr);
-                }
-            } else cc.addRock(cr);
+                    cc.addRock();
+                } else i--;
+            } else cc.addRock();
             i++;
         }
         return cc;
     }
 
     void moveToKallah(int ind, Player player) {
-        System.out.println(ind);
         int nr = cells[ind].getNumberOfRocks();
         for (int i = 0; i < nr; i++) {
-            Rock cr = cells[ind].getAndRemoveRock();
+            cells[ind].removeRock();
             if (player == cells[6].getPlayer())
-                cells[6].addRock(cr);
+                cells[6].addRock();
             else
-                cells[13].addRock(cr);
+                cells[13].addRock();
         }
     }
 
     int getIndexOfCell(Cell cell) {
-        System.out.println(cell);
         for (int i = 0; i < 14; i++) {
             if (cell.equals(cells[i]))
                 return i;
@@ -139,9 +168,9 @@ class CircleArray implements CopyOption {
         return -1;
     }
 
-    void printer(CircleArray cells){
+    void printer() {
         for (int i = 0; i < 14; i++) {
-            System.out.print(i+" "+cells.getCell(i).getNumberOfRocks() + "; ");
+            System.out.print(i + " " + cells[i].getNumberOfRocks() + "; ");
         }
         System.out.println();
     }
@@ -149,20 +178,20 @@ class CircleArray implements CopyOption {
 
     public int check() {
         int[] stones = this.getAllStones();
-        int tCount =0;
+        int tCount = 0;
         int fCount = 0;
         for (int i = 0; i < 14; i++) {
-            if(i!= 6 && i!=13){
-                if(i<6)
-                    tCount+=stones[i];
-                else fCount+=stones[i];
+            if (i != 6 && i != 13) {
+                if (i < 6)
+                    tCount += stones[i];
+                else fCount += stones[i];
             }
         }
-        if(stones[13]>36 || (tCount==0 && stones[6]<36))
+        if (stones[13] > 36 || (tCount == 0 && stones[6] < 36))
             return -1;
-        if(stones[6]>36 || (fCount==0 && stones[13]<36))
+        if (stones[6] > 36 || (fCount == 0 && stones[13] < 36))
             return 1;
-        if(stones[13]==stones[6] && stones[6]==36)
+        if (stones[13] == stones[6] && stones[6] == 36)
             return 2;
         return 0;
     }

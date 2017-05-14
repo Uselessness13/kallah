@@ -14,21 +14,18 @@ public class Cell {
     Cell nextCell;
     private Cell against;
     Player player;
-    private List<Rock> rocks;
+    private int rocks;
     private boolean big;
     Cell(boolean big, Player player){
-        rocks = new ArrayList<>();
+        rocks = 0;
         this.player = player;
         setBig(big);
     }
-    void addRock(Rock rock){ rocks.add(rock); }
-    private void removeRock(){
-        rocks.remove(rocks.size()-1);
-    }
-    Rock getAndRemoveRock(){Rock ret = rocks.get(rocks.size()-1); removeRock(); return ret;}
+    void addRock(){ this.rocks++; }
+    void removeRock(){this.rocks--;}
 
     int getNumberOfRocks(){
-        return rocks.size();
+        return rocks;
     }
 
     private void setBig(boolean big) {
@@ -44,17 +41,11 @@ public class Cell {
         return this.against;
     }
 
-    Rock getRock(int i) {
-        return this.rocks.get(i);
-    }
 
     boolean isBig() {
         return this.big;
     }
 
-    public List<Rock> getRocks() {
-        return rocks;
-    }
 
     Player getPlayer() {
         return this.player;

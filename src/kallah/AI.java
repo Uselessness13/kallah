@@ -10,13 +10,10 @@ public class AI extends Player{
     private Board board;
     private Player player;
     private Random random;
-    Node root;
-    HashMap<Integer, Node> rates;
 
     AI(Player player){
         this.player = player;
         random = new Random();
-        rates = new HashMap<>();
     }
     CircleArray calculate(Board board) {
 
@@ -25,8 +22,10 @@ public class AI extends Player{
 
         ArrayList<Integer> availableMoves = new ArrayList<>();
         for (int i = 7; i < 13; i++) {
-            if (cells.getCell(i).getNumberOfRocks() > 0)
+            if (this.cells.getCell(i).getNumberOfRocks() > 0){
                 availableMoves.add(i);
+                System.out.println(i + " with " + this.cells.getCell(i).getNumberOfRocks()+ " rocks");
+            }
         }
         CircleArray ind = null;
         HashMap<Integer, CircleArray> moves = new HashMap<>();
@@ -37,33 +36,21 @@ public class AI extends Player{
             moves.put(availableMove, currentBoard);
             board.setBoard(receivedCells);
         }
+        System.out.println(moves.size());
         ArrayList<Integer> move = new ArrayList<>();
         move.addAll(moves.keySet());
-        int max = 0;
+        System.out.println(move);
+        int max = -1;
         for (Integer m:move) {
             if (moves.get(m).getCell(13).getNumberOfRocks() > max){
                 ind = moves.get(m);
                 max = moves.get(m).getCell(13).getNumberOfRocks();
+                System.out.println(m+" move  - max "+max);
             }
         }
-
-        ind.printer(ind);
+        System.out.println();
+        receivedCells.printer();
+        ind.printer();
         return ind;
-    }
-
-    class Node {
-        Node father = null;
-        ArrayList<Node> childs;
-        CircleArray collocation;
-
-        Node(Node father, CircleArray board) {
-            this.father = father;
-            childs = new ArrayList<>();
-            this.collocation = board;
-        }
-
-        void addChild(CircleArray child) {
-            this.childs.add(new Node(this, child));
-        }
     }
 }

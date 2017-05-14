@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
@@ -187,6 +188,15 @@ public class Controller {
             }
             observer();
         }
+        System.out.println(summstones(board.getAllStones()));
+    }
+
+    int summstones(int[] stones){
+        int res = 0;
+        for (int i = 0; i < stones.length; i++) {
+            res+=stones[i];
+        }
+        return res;
     }
 
     void observer() {
@@ -207,7 +217,7 @@ public class Controller {
             fp.getFP(i).getChildren().clear();
             List<ImageView> viewList = new ArrayList<>();
             for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {
-                viewList.add(currentCell.getRock(j).getImage());
+                viewList.add(new ImageView("Images/black.png"));
             }
             fp.getFP(i).getChildren().addAll(viewList);
         }
