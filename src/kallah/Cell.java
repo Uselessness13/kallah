@@ -37,6 +37,7 @@ public class Cell {
 
     void setAgainst(Cell against) {
         this.against = against;
+        against.against = this;
     }
 
     Cell getAgainst() {
@@ -49,6 +50,10 @@ public class Cell {
 
     boolean isBig() {
         return this.big;
+    }
+
+    public List<Rock> getRocks() {
+        return rocks;
     }
 
     Player getPlayer() {

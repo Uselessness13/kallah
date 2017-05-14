@@ -20,7 +20,7 @@ public class Controller {
     String black = "Images/black.png";
     public Player player2;
     public Player player1;
-    private Player activePlyer;
+    private Player activePlyer = player1;
     CircleArray cells;
     Board board;
     FP fp;
@@ -49,15 +49,17 @@ public class Controller {
 
     public void newGame() {
         gameStarted = true;
+        firstStep = true;
         setFlowPanes();
         player1 = new Player();
         player2 = new Player();
         activePlyer = player1;
-        setCells();
-        board = new Board(cells, player1, player2);
+        //setCells();
+        board = new Board(player1, player2);
         if (wai) {
-            ai = new AI(board, player2);
+            ai = new AI(player2);
         }
+        cells = board.getBoard();
         painter();
         counter();
         pl3.setText("Ваш ход"); //первое уточнение игрока
@@ -65,49 +67,6 @@ public class Controller {
 
     public void IIDetector() {
         wai = !wai;
-    }
-
-    private void setCells() {
-        this.cells = new CircleArray(14);
-        this.cells.addCell(0, new Cell(false, player1));
-        this.cells.addCell(1, new Cell(false, player1));
-        this.cells.addCell(2, new Cell(false, player1));
-        this.cells.addCell(3, new Cell(false, player1));
-        this.cells.addCell(4, new Cell(false, player1));
-        this.cells.addCell(5, new Cell(false, player1));
-        this.cells.addCell(6, new Cell(true, player1));
-        this.cells.addCell(7, new Cell(false, player2));
-        this.cells.addCell(8, new Cell(false, player2));
-        this.cells.addCell(9, new Cell(false, player2));
-        this.cells.addCell(10, new Cell(false, player2));
-        this.cells.addCell(11, new Cell(false, player2));
-        this.cells.addCell(12, new Cell(false, player2));
-        this.cells.addCell(13, new Cell(true, player2));
-
-        this.cells.getCell(0).setAgainst(this.cells.getCell(12));
-        this.cells.getCell(1).setAgainst(this.cells.getCell(11));
-        this.cells.getCell(2).setAgainst(this.cells.getCell(10));
-        this.cells.getCell(3).setAgainst(this.cells.getCell(9));
-        this.cells.getCell(4).setAgainst(this.cells.getCell(8));
-        this.cells.getCell(5).setAgainst(this.cells.getCell(7));
-
-        this.cells.getCell(12).setAgainst(this.cells.getCell(0));
-        this.cells.getCell(11).setAgainst(this.cells.getCell(1));
-        this.cells.getCell(10).setAgainst(this.cells.getCell(2));
-        this.cells.getCell(9).setAgainst(this.cells.getCell(3));
-        this.cells.getCell(8).setAgainst(this.cells.getCell(4));
-        this.cells.getCell(7).setAgainst(this.cells.getCell(5));
-
-        for (int i = 0; i < 14; i++) {
-            Cell curCell = this.cells.getCell(i);
-            if (!curCell.isBig())
-                for (int j = 0; j < 6; j++) {
-                    Rock rock = new Rock();
-                    rock.setImage(new ImageView(i < 7 ? white : black));
-                    if (!curCell.isBig())
-                        curCell.addRock(rock);
-                }
-        }
     }
 
     private class FP {
@@ -136,7 +95,6 @@ public class Controller {
         }
     }
 
-
     private void setFlowPanes() {
         fp = new FP();
     }
@@ -146,18 +104,20 @@ public class Controller {
         player2.setCount(cells.getCell(13).getNumberOfRocks());
         pl1.setText(String.valueOf(player1.getCount()));
         pl2.setText(String.valueOf(player2.getCount()));
-        if (player1.getCount() >= 36 || player1.getCount() >= 36) {
+
+        if (player1.getCount() > 36 || player1.getCount() > 36) {
             gameStarted = false;
         }
         checkForWin();
     }
 
     private void recognize() {
-        if (activePlyer == player1) {
+        if (activePlyer == player1 && gameStarted) {
             pl3.setText("Ваш ход");
         } else {
             pl3.setText("Ход соперника");
         }
+        checkForWin();
     }
 
     private void checkForWin() {
@@ -171,16 +131,45 @@ public class Controller {
                 lp2 = true;
             }
         }
-        gameStarted = lp1 && lp2;
+        boolean w1 = player1.getCount() > 36;
+        boolean w2 = player2.getCount() > 36;
+        if (w1) pl3.setText("Вы побэйдили");
+        if (w2) pl3.setText("Вас побэйдили");
+        gameStarted = lp1 && lp2 && (!w1 && !w2);
     }
 
     public void clickOnCell(MouseEvent e) {
         Object view = (FlowPane) e.getSource();
         painter();
         if (gameStarted) {
-            if (activePlyer == player2 && ai != null) {
-                observer();
-                activePlyer = board.makeStep(ai.calculate(board), activePlyer);
+            if (wai) {
+                for (int i = 0; i < 14; i++) {
+                    if (fp.getFP(i).equals(view)) {
+                        if (board.getBoard().cells[i].getNumberOfRocks() > 0) {
+                            if (firstStep) {
+                                if (i != 0) {
+                                    activePlyer = board.makeStep(i, activePlyer);
+                                    observer();
+                                    firstStep = false;
+                                    if (activePlyer != player1) {
+                                        activePlyer = player1;
+                                        board.setBoard(ai.calculate(board));
+                                        observer();
+                                    }
+                                }
+                            } else {
+                                activePlyer = board.makeStep(i, activePlyer);
+                                observer();
+                                if (activePlyer != player1) {
+                                    activePlyer = player1;
+                                    board.setBoard(ai.calculate(board));
+                                    observer();
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
             } else {
                 for (int i = 0; i < 14; i++) {
                     if (fp.getFP(i).equals(view))
@@ -189,16 +178,10 @@ public class Controller {
                                 activePlyer = board.makeStep(i, activePlyer);
                                 observer();
                                 firstStep = false;
-                                if (activePlyer == player2 && ai != null) {
-                                    activePlyer = board.makeStep(ai.calculate(board), activePlyer);
-                                }
                             }
                         } else {
                             activePlyer = board.makeStep(i, activePlyer);
                             observer();
-                            if (activePlyer == player2 && ai != null) {
-                                activePlyer = board.makeStep(ai.calculate(board), activePlyer);
-                            }
                         }
                 }
             }
@@ -206,16 +189,21 @@ public class Controller {
         }
     }
 
-    void observer(){
+    void observer() {
         cells = board.getBoard();
         painter();
         counter();
         recognize();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public void painter() {
         for (int i = 0; i < 14; i++) {
-            Cell currentCell = this.cells.getCell(i);
+            Cell currentCell = board.getBoard().getCell(i);
             fp.getFP(i).getChildren().clear();
             List<ImageView> viewList = new ArrayList<>();
             for (int j = 0; j < currentCell.getNumberOfRocks(); j++) {

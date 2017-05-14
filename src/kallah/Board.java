@@ -3,24 +3,30 @@ package kallah;
 /**
  * Created by Useless on 18.04.2017.
  */
-public class Board {
-    CircleArray board;
-    Player player1;
-    Player player2;
-    Board(CircleArray board, Player player1, Player player2){
-        this.board = board;
+class Board {
+    private static CircleArray board;
+    private Player player1;
+    private Player player2;
+    private Player activePlayer;
+    Board(Player player1, Player player2){
         this.player1 = player1;
         this.player2 = player2;
+        board = new CircleArray(14);
+        board.setCells(player1, player2);
+        activePlayer = player1;
     }
 
-    public Player makeStep(int i, Player active){
+    void invertPlayer(){
+        if (activePlayer == player1)
+            activePlayer = player2;
+        else activePlayer = player1;
+    }
+
+    Player makeStep(int i, Player active){
         if (board.getCell(i).player == active && !board.getCell(i).isBig()) {
             Cell endCell = null;
             Cell startCell = null;
-            int startCellRocks = -1;
             if (i >= 0) {
-                startCell = board.getCell(i);
-                startCellRocks = startCell.getNumberOfRocks();
                 endCell = board.moveRocks(i, active);
             }
             if (endCell != null) {
@@ -35,11 +41,22 @@ public class Board {
         return active;
     }
 
-    public CircleArray getBoard() {
+    CircleArray getBoard() {
         return board;
     }
 
-    public void setBoard(CircleArray board) {
-        this.board = board;
+    void setBoard(CircleArray board) {
+        Board.board = board;
+    }
+
+
+    public int[] getAllStones() {
+        int i = 0;
+        int[] stones = new int[14];
+        for (Cell cell : board.cells) {
+            stones[i] = cell.getNumberOfRocks();
+            i++;
+        }
+        return stones;
     }
 }
